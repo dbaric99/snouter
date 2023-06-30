@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "turbo": "^1.10.6"
+  },
+  "dependencies": {
+    "@nestjs/cli": "^10.1.0"
   }
 }
