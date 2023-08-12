@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client';
-import { encodePassword } from '../src/utils/bcrypt';
+import { encodePassword } from 'src/utils/bcrypt';
 
 const { hash, salt } = encodePassword('admin-test');
 const { hash: hashUser, salt: saltUser } = encodePassword('user-test');
