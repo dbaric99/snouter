@@ -10,6 +10,8 @@ import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CategorySpecificationsModule } from './category-specifications/category-specifications.module';
+import { SubcategorySpecificationsModule } from './subcategory-specifications/subcategory-specifications.module';
+import { AddressesModule } from './addresses/addresses.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { CategorySpecificationsModule } from './category-specifications/category
     UsersModule,
     AuthModule,
     CategorySpecificationsModule,
+    SubcategorySpecificationsModule,
+    AddressesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
