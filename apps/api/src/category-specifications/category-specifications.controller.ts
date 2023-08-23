@@ -1,15 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CategorySpecificationsService } from './category-specifications.service';
 import { CreateCategorySpecificationDto } from './dto/create-category-specification.dto';
 import { UpdateCategorySpecificationDto } from './dto/update-category-specification.dto';
 
 @Controller('category-specifications')
 export class CategorySpecificationsController {
-  constructor(private readonly categorySpecificationsService: CategorySpecificationsService) {}
+  constructor(
+    private readonly categorySpecificationsService: CategorySpecificationsService,
+  ) {}
 
   @Post()
-  create(@Body() createCategorySpecificationDto: CreateCategorySpecificationDto) {
-    return this.categorySpecificationsService.create(createCategorySpecificationDto);
+  create(
+    @Body() createCategorySpecificationDto: CreateCategorySpecificationDto,
+  ) {
+    return this.categorySpecificationsService.create(
+      createCategorySpecificationDto,
+    );
   }
 
   @Get()
@@ -23,8 +37,14 @@ export class CategorySpecificationsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategorySpecificationDto: UpdateCategorySpecificationDto) {
-    return this.categorySpecificationsService.update(+id, updateCategorySpecificationDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateCategorySpecificationDto: UpdateCategorySpecificationDto,
+  ) {
+    return this.categorySpecificationsService.update(
+      +id,
+      updateCategorySpecificationDto,
+    );
   }
 
   @Delete(':id')

@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -19,6 +20,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CategoryEntity } from './entities/category.entity';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RoleGuard } from 'src/auth/guards/role.guard';
 
 @Controller('categories')
 @ApiTags('Category')
@@ -26,6 +31,8 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: CategoryEntity })
   create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -55,6 +62,8 @@ export class CategoriesController {
   }
 
   @Patch(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: CategoryEntity })
   update(
@@ -65,6 +74,8 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: CategoryEntity })
   remove(@Param('id', ParseIntPipe) id: number) {

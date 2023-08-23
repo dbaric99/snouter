@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,6 +22,11 @@ import {
 import { UserEntity } from './entities/user.entity';
 import { AddressEntity } from 'src/addresses/entities/address.entity';
 import { CreateAddressDto } from 'src/addresses/dto/create-address.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RoleGuard } from 'src/auth/guards/role.guard';
+import { ProfileOwnerGuard } from 'src/auth/guards/profile-owner.guard';
 
 @Controller('users')
 @ApiTags('User')
@@ -34,6 +40,8 @@ export class UsersController {
   }
 
   @Get()
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: [UserEntity] })
   async findAll() {
@@ -42,6 +50,8 @@ export class UsersController {
   }
 
   @Get(':id')
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard || ProfileOwnerGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async findOne(@Param('id', ParseIntPipe) id: number) {
@@ -53,6 +63,8 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @Roles(Role.ADMIN, Role.USER)
+  @UseGuards(JwtAuthGuard, RoleGuard || ProfileOwnerGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async update(
@@ -63,6 +75,7 @@ export class UsersController {
   }
 
   @Post(':id/address')
+  @UseGuards(JwtAuthGuard, ProfileOwnerGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: AddressEntity })
   async addAddress(
@@ -74,6 +87,8 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async remove(@Param('id', ParseIntPipe) id: number) {
